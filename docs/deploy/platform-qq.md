@@ -23,7 +23,7 @@ title: QQ
 
 因此，*是否在 QQ 平台搭建这样的非官方机器人取决于你的慎重考虑*。同时，第三方方案的可用性也可能会随时间推移而存在变化，海豹官方无法做出任何保证。
 
-目前，仅有 [官方机器人服务](#官方机器人) 是被 QQ 官方认可的机器人方案。该方案可用性由 QQ 官方保证，但目前 **仅对企业用户和部分受邀个人用户开放**，同时在功能上非常受限。
+目前，仅有 [官方机器人服务](./platform-qq-official.md) 是被 QQ 官方认可的机器人方案。该方案可用性由 QQ 官方保证，但目前 **仅对企业用户和部分受邀个人用户开放**，同时在功能上非常受限。
 
 如果有可能，建议迁移到其它平台，在 QQ 平台选择何种方式取决于你自己的选择。
 
@@ -44,7 +44,7 @@ title: QQ
 - 需要比较简单的部署流程，希望资源占用低的，见 [Lagrange](#lagrange)；
 - 需要比较简单的部署流程，不是特别在意资源占用的，见 [LLOneBot](#llonebot)；
 - 通过 docker 部署海豹的，见 [QQ - Docker 中的海豹](./platform-qq-docker)；
-- 如果你有 QQ 官方机器人权限，见 [官方机器人](#官方机器人)；
+- 如果你有 QQ 官方机器人权限，见 [官方机器人](./platform-qq-official.md)；
 - Go-cqhttp 与 QSign 方案因可用性原因已被弃用。**我们不建议任何用户再使用此方式部署 QQ 接入，同时强烈建议正在使用该方案的用户迁移**。
 
 不同的对接方式适应不同的情况，可能会存在途径特有的功能缺失和其它问题，请根据自己的情况选择适合的方式。
@@ -77,11 +77,13 @@ title: QQ
 
 ## 内置客户端 <Badge type="tip" text="v1.4.5" />
 
-海豹从 <Badge type="tip" text="v1.4.5"/> 开始提供了内置客户端的连接方式。
+海豹从 <Badge type="tip" text="v1.4.5"/> 开始提供内置客户端的连接方式。
 
 ::: warning
 
 需要知道的是，该方案也是前言中提到的非官方机器人，并不受到 QQ 官方认可。
+
+M 系列芯片 Mac 用户与部分无法使用内置客户端的手机用户请移步至[内置 gocq](#内置-gocq)
 
 :::
 
@@ -119,6 +121,43 @@ Windows Server 2012 可能会缺少部分运行库，需要自行下载安装。
 
 :::
 
+## 内置 gocq <Badge type="tip" text="v1.5.0" />
+
+海豹从 <Badge type="tip" text="v1.5.0"/> 开始提供内置 gocq 的连接方式。
+
+::: warning
+
+需要知道的是，该方案也是前言中提到的非官方机器人，并不受到 QQ 官方认可。
+
+:::
+
+进入海豹 Web UI 的「账号设置」新增连接，选择账号类型「QQ(内置 gocq)」，填写 QQ 号，其余内容无需修改：
+
+<img src="./images/platform-qq-builtin-gocq-1.png" alt="选择内置 gocq" >
+<img src="./images/platform-qq-builtin-gocq-2.png" alt="内置 gocq 配置">
+
+随后使用登录了目标账号的手机 QQ 尽快扫码登录（二维码会在十秒左右出现，请耐心等待）：
+
+<img src="./images/platform-qq-builtin-gocq-3.png" alt="内置 gocq 扫码登录">
+
+在手机上确认登录以后，等待状态变为「已连接」即可。
+
+登录的账号由扫码的账号决定，请不要询问 `为什么登录的是我自己的账号` 之类的问题。
+
+::: warning 安卓端海豹扫码
+
+由于 QQ 的安全策略并不支持图片识别或长按扫描二维码登录，你需要两个手机（一个运行海豹，一个扫码）或下载 TIM 软件扫码登录。
+
+:::
+
+::: warning 注意
+
+使用此方案如遇到登录失败、无法回复等情况请先 `尝试删除账号重新添加`、`在「账号设置」界面切换签名服务` 等方法。
+
+修改签名时*请勿随意修改签名版本*，除非你知道自己在干什么。
+
+:::
+
 ## 分离部署
 
 ::: info 分离部署
@@ -129,13 +168,15 @@ Windows Server 2012 可能会缺少部分运行库，需要自行下载安装。
 
 :::
 
-使用此方法你可能需要对「QQ(onebot11正向WS)」、「QQ(onebot11正向WS)」、「QQ(onebot11正向WS)」、「[WIP]Satori」的区别有一定了解。
+::: tip 提示：不同的对接方式
 
-「QQ(onebot11正向WS)」遵循 onebot11 标准，由海豹核心主动连接 QQ 登录框架。在 UI 界面添加「连接地址」格式应当为 `ws://{Host}:{Port}`。
+使用此方法你可能需要对「QQ(onebot11正向WS)」、「QQ(onebot11反向WS)」、「[WIP]Satori」的区别有一定了解。
 
-「QQ(onebot11反向WS)」遵循 onebot11 标准，由 QQ 登录框架主动连接海豹核心。在 UI 界面添加「连接地址」格式应当为 `{Host}:{Port}`。
+- 「QQ(onebot11正向WS)」为 onebot11 标准的连接方式之一，由海豹核心主动连接 QQ 登录框架。在 UI 界面添加「连接地址」格式应当为 `ws://{Host}:{Port}`。
+- 「QQ(onebot11反向WS)」为 onebot11 标准的连接方式之二，由 QQ 登录框架主动连接海豹核心。在 UI 界面添加「连接地址」格式应当为 `{Host}:{Port}`。
+- 「[WIP]Satori」为 Satori 标准的连接方式，由海豹核心主动连接 QQ 登录框架。WIP 代表该对接方式为实验性的，可能会在未来发生变化。
 
-「[WIP]Satori」遵循 Satori 标准，由海豹核心主动连接 QQ 登录框架。
+:::
 
 ### Lagrange <Badge type="tip" text="v1.4.2" />
 
@@ -206,23 +247,21 @@ Windows Server 2012 可能会缺少部分运行库，需要自行下载安装。
 
 [NapCatQQ](https://github.com/NapNeko/NapCatQQ) 是在后台低占用运行的无头（没有界面）的 NTQQ，具体占用会因人而异，QQ 群、好友越多占用越高。
 
-[NapCat 官方文档](https://napneko.github.io/zh-CN/)
+[NapCat 官方文档](https://napneko.github.io)
 
 :::
 
-::: warning 使用此方案的用户请注意不要随意*更新* QQ 客户端。
+::: warning 使用此方案的用户请注意不要随意 *更新* QQ 客户端。
 
 由于 QQ 客户端检测机制的变化，更新 QQ 客户端后可能导致方案不可用，并且更新后需要重新安装登录框架，所以不建议用户随意更新 QQ 客户端。
 
 :::
 
-NapCat 是基于官方 NTQQ 实现的 Bot 框架，因此在开始前，你需要根据 [NapCatQQ](https://napneko.github.io/zh-CN/guide/getting-started#%E5%AE%89%E8%A3%85-qq) 的手册安装官方 QQ，若 QQ 版本过低会导致程序无法正常启动。
+NapCat 是基于官方 NTQQ 实现的 Bot 框架，因此在开始前，你需要根据 [NapCatQQ](https://napneko.github.io/guide/start-install) 的手册安装官方 QQ，若 QQ 版本过低会导致程序无法正常启动。
 
 #### 下载 NapCatQQ
 
-请按照 [NapCat 官方手册](https://napneko.github.io/zh-CN/guide/getting-started)下载安装，如果你不确定自己可以完全理解 NapCat 官方手册并操作，请不要安装 9.9.12 版本 QQ。
-
-然后按照[基础配置](https://napneko.github.io/zh-CN/guide/config/basic)和自己的需求修改配置文件。
+请按照 [NapCat 官方手册](https://napneko.github.io/guide/start-install) 下载安装，然后按照 [基础配置](https://napneko.github.io/config/basic) 和自己的需求修改配置文件。
 
 #### 海豹连接
 
@@ -241,49 +280,3 @@ NapCat 是基于官方 NTQQ 实现的 Bot 框架，因此在开始前，你需�
 #### Chronocat Satori 协议 <Badge type="tip" text="v1.4.5" />
 
 在账号添加中，选择「[WIP]Satori」，填写相应信息进行连接。
-
-## 官方机器人 <Badge type="tip" text="v1.4.2" />
-
-海豹从 <Badge type="tip" text="v1.4.2"/> 开始支持对接 QQ 官方的机器人服务。
-
-::: tip 提示：QQ 机器人
-
-QQ 官方目前已开放了机器人功能，可进入 [QQ 开放平台](https://q.qq.com/#/) 进行申请。
-
-但截止到目前，**QQ 官方机器人的群聊权限并未对所有人开放**。我们也希望在未来，每个人都能轻松地对接上官方提供的机器人服务。
-
-同时，由于 QQ 官方对机器人能力的严格限制（包括获取 QQ 号、昵称，非 @ 时响应，私聊，群控等大量功能目前不支持），目前**对接官方接口的骰子很多功能无法支持**（如跑团 Log，暗骰，对抗等）。
-
-:::
-
-### 尝试一下
-
-如果你想尝试一下这样的机器人，非常欢迎你使用海豹官方的骰子：
-
-<img src="./images/platform-qq-bot-qrcode.jpg" alt="海豹机器人二维码" width="65%">
-
-### 获取连接所需信息
-
-要获取用于连接海豹的信息之前，你需要建立好一个 QQ 机器人应用。可前往 [QQ 开放平台](https://q.qq.com/#/) 进行申请，进行**实名**注册后，创建一个机器人应用。
-
-创建完成后，进入机器人管理后台，切换到「开发设置」页面：
-
-<img src="./images/platform-qq-official-1.png" alt="切换到开发设置" width="40%">
-
-在页面中你可以看到这样的信息，其中「机器人 ID」「机器人令牌」「机器人密钥」这三项是海豹进行连接所需要的。
-
-![开发设置](./images/platform-qq-official-2.png)
-
-### 连接海豹
-
-登录海豹并添加账号，选择「QQ(官方机器人)」。填写对应的信息点击连接。你的海豹应该可以正常连接官方机器人运作了！
-
-<img src="./images/platform-qq-official-3.png" alt="连接官方 Bot" width="100%">
-
-### 使用海豹
-
-::: warning
-
-目前官方机器人只响应包含 `@` 的消息，操作时请注意。
-
-:::

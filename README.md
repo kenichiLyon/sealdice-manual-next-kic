@@ -10,28 +10,44 @@ VitePress 驱动的海豹骰官方使用手册。
 
 如需调整导航栏和侧边栏，则涉及到修改 `docs/.vitepress/theme.ts` 和 `docs/.vitepress/catalogue.ts` 中的配置。
 
-## Lint
+## 安装依赖
+
+编写文档原则上不需要安装任何依赖。但是，如果希望利用 linter 自检或本地运行预览效果，则需要执行以下指令安装依赖。
+
+```shell
+pnpm install
+```
+
+## 规范和要求
+
+### Markdown 格式规范
 
 提交前请务必使用 markdownlint 进行检查，不满足格式要求的修改无法合并入主仓库。
 
 ```shell
-pnpm install
 pnpm run lint:md
-pnpm run lint:md:fix // 检查并进行部分自动修复
+pnpm run lint:md:fix # 检查并进行部分自动修复
 ```
 
 对于 VS Code 用户，请使用 [markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint) 插件获取编辑器警告。这一插件已经被添加到本项目的推荐插件中，只需在打开本项目时按 VS Code 的提示安装即可。
 
-## 排版
+### 排版规范
 
-文档排版应当遵循 [中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines) 的规范。
+文档排版应当遵循 [中文文案排版指北](https://github.com/sparanoid/chinese-copywriting-guidelines) 的规范，不满足格式要求的修改无法合并入主仓库。
 
-使用 AutoCorrect 插件可以提供相关帮助。
+项目集成了自动检查和修复插件，可以通过以下指令调用。
+
+```shell
+pnpm run lint:autocorrect
+pnpm run lint:autocorrect:fix # 检查并进行部分自动修复
+```
+
+使用 AutoCorrect 插件可以提供编辑器集成的提示。这一插件已经被添加到本项目的推荐插件中，只需在打开本项目时按 VS Code 的提示安装即可。
 
 - [VS Code](https://marketplace.visualstudio.com/items?itemName=huacnlee.autocorrect)
 - [JetBrains](https://plugins.jetbrains.com/plugin/20244-autocorrect)
 
-## 标注功能版本
+### 标注功能版本
 
 对于新加入的功能，需要在标题和正文开头都注明加入的版本。
 
@@ -51,7 +67,7 @@ pnpm run lint:md:fix // 检查并进行部分自动修复
 
 ![版本标签](README.assets/version_badge.png)
 
-### 开发版中的新功能
+#### 开发版中的新功能
 
 如果是为当前开发版中的新功能编写文档，而不能确定下一个正式版的版本号，使用以下标签：
 
@@ -61,7 +77,7 @@ pnpm run lint:md:fix // 检查并进行部分自动修复
 
 这样做的好处是：在确定版本号后，方便通过文本替换批量修改。
 
-## 归档警告
+### 归档警告
 
 对于弃用的功能，需要在正文开头注明弃用的版本和归档的时间。
 
@@ -77,7 +93,7 @@ pnpm run lint:md:fix // 检查并进行部分自动修复
 
 ![归档警告](README.assets/archieve_exanple.png)
 
-### 开发版中弃用的功能
+#### 开发版中弃用的功能
 
 对于在当前开发版中弃用，即将于下一个正式版中去除的功能，**不要**在正式版发布前移动原始文本。
 
